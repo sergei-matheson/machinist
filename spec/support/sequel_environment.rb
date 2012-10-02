@@ -2,7 +2,7 @@ require 'sequel'
 require 'sequel/extensions/migration'
 require 'machinist/sequel'
 
-DB = Sequel.mysql(:database => 'machinist')
+DB = Sequel.sqlite(:database => 'machinist')
 
 Sequel.migration do
   change do
