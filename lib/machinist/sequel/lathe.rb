@@ -23,8 +23,8 @@ module Machinist::Sequel
       if association
         if association.returns_array?
           (object.machinist_deferred_associations ||= []) << [association, value]
-        elsif value.new?
-          value.save(:raise_on_failure => true)
+        else
+          value.save(:raise_on_failure => true) if value.new?
           super
         end
       else

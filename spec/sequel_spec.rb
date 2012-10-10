@@ -94,6 +94,22 @@ describe Machinist::Sequel do
       post.author.should_not be_new
       post.author.username.should =~ /^post_author_\d+$/
     end
+
+    it "handles setting association value to a persisted object" do
+      SequelEnvironment::User.blueprint do
+        username { "user_#{sn}" }
+      end
+      existing_user = SequelEnvironment::User.make!(:username => 'existing user')
+      SequelEnvironment::Post.blueprint do
+        author { existing_user  }
+      end
+      post = SequelEnvironment::Post.make!
+      post.should be_a(SequelEnvironment::Post)
+      post.should_not be_new
+      post.author.should be_a(SequelEnvironment::User)
+      post.author.should_not be_new
+      post.author.username.should == 'existing user'
+    end
   end
 
   context "error handling" do
